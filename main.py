@@ -275,6 +275,7 @@ def regisratsiya():
 		generateMessage(result)
 		return result
 
+
 	itemPos = 0
 	for item in products:
 		gridElement(
@@ -296,6 +297,54 @@ def regisratsiya():
 	)
 	tk.mainloop()
 
+def deleteProduct():
+	global products
+	tk = Tk.Tk()
+	tk.configure(bg = COLORS["bg"])
+	downloadCurrentProducts()
+
+	def listAllElements():
+		nonlocal tk	
+		itemPos = 0
+		for item in products:
+			gridElement(
+				Tk.Label, tk, text = f"""({item["id"]}) \"{item["name"]}\" = ({item["price"]} EUR)""",
+				row = itemPos, column = 0, columnspan = 1, width = 45, height = 1, 
+				bg = COLORS["bg"], font = theAppFont(size = "12"),
+				padx = 5, pady = 5,
+			)
+			gridElement(
+				Tk.Button, tk, text = f"""DEL""",
+				row = itemPos, column = 1, columnspan = 1, width = 5, height = 1, 
+				bg = COLORS["bg-key"], font = theAppFont(size = "12"),
+				padx = 5, pady = 5,
+				command = lambda item = item: choosenForDeletion(item["id"])
+			)
+			itemPos += 1
+
+
+	def choosenForDeletion(id_):
+		cursor = db.cursor()
+		try:
+			cursor.execute("USE db_fiskalnakasa;")
+			cursor.execute("DELETE FROM products WHERE id = %s;", 
+				[
+					id_,
+				]
+			)
+			db.commit()
+			downloadCurrentProducts()
+			for item in tk.grid_slaves():
+				item.grid_forget()
+			listAllElements()
+		except Exception as err:
+			generateMessage(f"""Failed deleting product!\n{err}""")
+		db.rollback()
+
+
+	listAllElements()
+	tk.mainloop()
+	
 
 if __name__ == "__main__":
 	root = Tk.Tk()
@@ -310,6 +359,16 @@ if __name__ == "__main__":
 		command = lambda: addProduct()
 	)
 	genericOptionsPos += 1 
+
+	gridElement(
+		Tk.Button, root, text = "Delete Product",
+		row = genericOptionsPos, column = 0, columnspan = 1,  width = 15, height = 1, 
+		bg = COLORS["bg-key-function"], font = theAppFont(size = "12"),
+		padx = 5, pady = 5,
+		command = lambda: deleteProduct()
+	)
+	genericOptionsPos += 1 
+	
 	gridElement(
 		Tk.Button, root, text = "Regisratsiya",
 		row = genericOptionsPos, column = 0, columnspan = 1,  width = 15, height = 1, 
@@ -319,31 +378,6 @@ if __name__ == "__main__":
 	)
 	genericOptionsPos += 1 
 	
-	gridElement(
-		Tk.Button, root, text = "Izves'tay",
-		row = genericOptionsPos, column = 0, columnspan = 1,  width = 15, height = 1, 
-		bg = COLORS["bg-key-function"], font = theAppFont(size = "12"),
-		padx = 5, pady = 5,
-		command = lambda: izves_tay()
-	)
-	genericOptionsPos += 1 
-	
-	gridElement(
-		Tk.Button, root, text = "Nuliranye",
-		row = genericOptionsPos, column = 0, columnspan = 1,  width = 15, height = 1, 
-		bg = COLORS["bg-key-function"], font = theAppFont(size = "12"),
-		padx = 5, pady = 5,
-		command = lambda: nuliranye()
-	)
-	genericOptionsPos += 1 
-	
-	gridElement(
-		Tk.Button, root, text = "Programiranye",
-		row = genericOptionsPos, column = 0, columnspan = 1,  width = 15, height = 1, 
-		bg = COLORS["bg-key-function"], font = theAppFont(size = "12"),
-		padx = 5, pady = 5,
-		command = lambda: programiranye()
-	)
 
 	
 	root.mainloop()
