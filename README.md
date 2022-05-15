@@ -1,17 +1,21 @@
-# ThingKnownAsFiskalnakasa
+# ThingKnownAsFiskalnakasa  
 
-## Add Product  
+## Add Product   
 
 Adds product to database。  
 
-## Delete Product
+## Delete Product  
 
 Deletes product from database。  
 
-## Alter Product
+## Alter Product  
 
 Alters product in database。  
 
-## Registratsiya
+## Registratsiya  
 
 Does some math with prices and quantities。  
+
+## Set Color Mode  
+
+Sets color mode。  

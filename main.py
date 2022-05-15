@@ -8,6 +8,7 @@ from Stuff import COLORS, generateMessage, gridElement, theAppFont, __OPERATORS,
 import tkinter as Tk
 import threading
 import Connect
+import Stuff
 
 db = Connect.connectSql()
 
@@ -44,8 +45,7 @@ def insertText(text):
 
 
 def alterColors(isLightMode):
-	stuff.setColorMode(isLightMode)
-	calculator.saveState("temp")
+	Stuff.setColorMode(isLightMode)
 	os.execl(sys.executable, sys.executable, *sys.argv)
 
 def setColorMode():
@@ -528,6 +528,16 @@ if __name__ == "__main__":
 		bg = COLORS["bg-key-function"], font = theAppFont(size = "12"),
 		padx = 5, pady = 5,
 		command = lambda: regisratsiya()
+	)
+	genericOptionsPos += 1 
+	
+
+	gridElement(
+		Tk.Button, root, text = "Set Color Mode",
+		row = genericOptionsPos, column = 0, columnspan = 1,  width = 15, height = 1, 
+		bg = COLORS["bg-key-function"], font = theAppFont(size = "12"),
+		padx = 5, pady = 5,
+		command = lambda: setColorMode()
 	)
 	genericOptionsPos += 1 
 	
