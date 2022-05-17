@@ -2,10 +2,10 @@
 
 ## Initialization
 
-If you haven't used this before do。
-&nbsp; &nbsp; Run `prepareDatabase.py`。
-Done。
-Run `main.py`。
+If you haven't used this before do。 
+&nbsp; &nbsp; Run `prepareDatabase.py`。 
+Done。 
+Run `main.py`。 
 
 ## Usage
 
