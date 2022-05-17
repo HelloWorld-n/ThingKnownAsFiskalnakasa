@@ -43,7 +43,6 @@ def insertText(text):
 	if text in __OPERATORS + ",":
 		lbl_input["text"] += " "
 
-
 def alterColors(isLightMode):
 	Stuff.setColorMode(isLightMode)
 	os.execl(sys.executable, sys.executable, *sys.argv)
@@ -73,16 +72,12 @@ def setColorMode():
 		command = lambda: alterColors(True)
 	)
 
-
-
-
 def addProduct():
 	global products
 	
 	tk = Tk.Tk()
 	tk.configure(bg = COLORS["bg"])
 	def add(id_, name, price):
-			
 		try:
 			problem = False
 			cursor = db.cursor()
@@ -176,8 +171,6 @@ def addProduct():
 
 	tk.mainloop()
 
-
-
 def regisratsiya():
 	global products
 	downloadCurrentProducts()
@@ -236,8 +229,7 @@ def regisratsiya():
 			command = lambda pos=pos: quantityAltered(pos)
 		)
 		tk.mainloop()
-	
-	
+		
 	def buy(providenProduct):
 		nonlocal productsBuyen
 		nonlocal productsQuantityList
@@ -274,7 +266,6 @@ def regisratsiya():
 			result += item["price"] * item["quantity"]
 		generateMessage(result)
 		return result
-
 
 	itemPos = 0
 	for item in products:
@@ -322,7 +313,6 @@ def deleteProduct():
 			)
 			itemPos += 1
 
-
 	def choosenForDeletion(id_):
 		cursor = db.cursor()
 		try:
@@ -341,10 +331,8 @@ def deleteProduct():
 			generateMessage(f"""Failed deleting product!\n{err}""")
 		db.rollback()
 
-
 	listAllElements()
 	tk.mainloop()
-
 
 def alterProduct():
 	global products
@@ -370,7 +358,6 @@ def alterProduct():
 				command = lambda item = item: choosenForAlteration(item)
 			)
 			itemPos += 1
-
 
 	def choosenForAlteration(item):
 		tk = Tk.Tk()
@@ -483,13 +470,11 @@ def alterProduct():
 			command = confirmValues
 		)
 
-
 		db.rollback()
 		tk.mainloop()
 	listAllElements()
 	tk.mainloop()
 	
-
 if __name__ == "__main__":
 	root = Tk.Tk()
 	root.configure(bg = COLORS["bg"])
@@ -531,7 +516,6 @@ if __name__ == "__main__":
 	)
 	genericOptionsPos += 1 
 	
-
 	gridElement(
 		Tk.Button, root, text = "Set Color Mode",
 		row = genericOptionsPos, column = 0, columnspan = 1,  width = 15, height = 1, 
@@ -540,7 +524,5 @@ if __name__ == "__main__":
 		command = lambda: setColorMode()
 	)
 	genericOptionsPos += 1 
-	
-
 	
 	root.mainloop()

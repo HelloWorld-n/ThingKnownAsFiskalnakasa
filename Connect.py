@@ -22,5 +22,3 @@ def connectSql():
 		password=SQL_PASSWORD,
 		cursorclass=pymysql.cursors.DictCursor
 	)
-
-			
