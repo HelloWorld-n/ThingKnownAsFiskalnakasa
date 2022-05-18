@@ -202,6 +202,7 @@ def generateMessage(message):
 		bg = COLORS["bg"], fg = COLORS["fg"],
 		padx = 5, pady = 5,
 	)
+	infoMessage.protocol("WM_DELETE_WINDOW", lambda: [infoMessage.destroy(), infoMessage.quit()])
 	infoMessage.mainloop()
 
 

@@ -47,31 +47,6 @@ def alterColors(isLightMode):
 	Stuff.setColorMode(isLightMode)
 	os.execl(sys.executable, sys.executable, *sys.argv)
 
-def setColorMode():
-	root = Tk.Tk()
-	root.configure(bg = COLORS["bg"])
-	gridElement(
-		Tk.Button, root, text = "Dark",
-		row = 0, column = 0, 
-		bg = COLORS["bg"], font = theAppFont(size = "16"),
-		padx = 5, pady = 5,
-		command = lambda: alterColors(False)
-	)
-	gridElement(
-		Tk.Button, root, text = "Ask System",
-		row = 1, column = 0, 
-		bg = COLORS["bg"], font = theAppFont(size = "16"),
-		padx = 5, pady = 5,
-		command = lambda: alterColors(None)
-	)
-	gridElement(
-		Tk.Button, root, text = "Light",
-		row = 2, column = 0, 
-		bg = COLORS["bg"], font = theAppFont(size = "16"),
-		padx = 5, pady = 5,
-		command = lambda: alterColors(True)
-	)
-
 def addProduct():
 	global products
 	
@@ -169,123 +144,6 @@ def addProduct():
 		command = lambda id_ = idEntry, name = nameEntry, price = priceEntry: add(id_, name, price)
 	)
 
-	tk.mainloop()
-
-def regisratsiya():
-	global products
-	downloadCurrentProducts()
-	tk = Tk.Tk()
-	tk.configure(bg = COLORS["bg"])
-
-	productsBuyen = []
-	productsQuantityList = []
-
-	def alterQuantity(pos):
-		nonlocal productsBuyen
-		tk = Tk.Tk()
-		tk.configure(bg = COLORS["bg"])
-		
-		def quantityAltered(pos):
-			nonlocal quantityEntry
-			nonlocal productsBuyen
-			nonlocal productsQuantityList
-			try: 
-				float(quantityEntry.get())
-				generateMessage("Success")
-			except:
-				quantityEntry.delete(0, Tk.END)
-				quantityEntry.insert(0, str(productsBuyen[pos]["quantity"]))
-				generateMessage("Err: Please make sure it is float!")
-			productsBuyen[pos]["quantity"] = float(quantityEntry.get())
-			productsQuantityList[pos].configure(
-				text = f""".&{
-					(
-						productsBuyen[pos]["quantity"] 
-					) if productsBuyen[pos]["quantity"] != round(productsBuyen[pos]["quantity"]) else (
-						round(productsBuyen[pos]["quantity"])
-					)
-				}"""
-			)
-
-		gridElement(
-			Tk.Label, tk, 
-			text = f"""Quantity of [{pos}]@> \"{productsBuyen[pos]["name"]}\": """, 
-			row = 0, column = 2,  width = 45, height = 1, 
-			bg = COLORS["bg"], font = theAppFont(size = "12"),
-			padx = 5, pady = 5, 
-		)
-		quantityEntry = gridElement(
-			Tk.Entry, tk, 
-			row = 0, column = 3,
-			state = "normal", 
-			bg = COLORS["bg"], font = theAppFont(size = "12"),  
-		)
-		gridElement(
-			Tk.Button, tk, 
-			text = f"""\"Alter""", 
-			row = 0, column = 4,  width = 5, height = 1, 
-			bg = COLORS["bg-key"], font = theAppFont(size = "12"),
-			padx = 5, pady = 5,
-			command = lambda pos=pos: quantityAltered(pos)
-		)
-		tk.mainloop()
-		
-	def buy(providenProduct):
-		nonlocal productsBuyen
-		nonlocal productsQuantityList
-		gridElement(
-			Tk.Label, tk, 
-			text = f"""\"{providenProduct["name"]}\" ({providenProduct["price"]}) """, 
-			row = len(productsBuyen), column = 2,  width = 45, height = 1, 
-			bg = COLORS["bg"], font = theAppFont(size = "12"),
-			padx = 5, pady = 5,
-		)
-		productsQuantityList += [
-			gridElement(
-				Tk.Label, tk, 
-				text = f""".&1""", 
-				row = len(productsBuyen), column = 3,  width = 5, height = 1, 
-				bg = COLORS["bg"], font = theAppFont(size = "12"),
-				padx = 5, pady = 5,
-			), 
-		]
-		gridElement(
-			Tk.Button, tk, 
-			text = f"""\"Alter""", 
-			row = len(productsBuyen), column = 4,  width = 5, height = 1, 
-			bg = COLORS["bg-key"], font = theAppFont(size = "12"),
-			padx = 5, pady = 5,
-			command = lambda pos=len(productsBuyen): alterQuantity(pos)
-		)
-		productsBuyen += [{**providenProduct,  "quantity": 1}]
-
-	def calculateTotalPrice():
-		nonlocal productsBuyen
-		result = 0
-		for item in productsBuyen:
-			result += item["price"] * item["quantity"]
-		generateMessage(result)
-		return result
-
-	itemPos = 0
-	for item in products:
-		gridElement(
-			Tk.Button, tk, text = f"""({item["id"]}) \"{item["name"]}\" = ({item["price"]} EUR)""",
-			row = itemPos, column = 0, columnspan = 1, width = 45, height = 1, 
-			bg = COLORS["bg-key-variable"], font = theAppFont(size = "12"),
-			padx = 5, pady = 5,
-			command = lambda item = item: buy(item)
-		)
-		itemPos += 1
-	
-	fnPos = 0
-	gridElement(
-		Tk.Button, tk, text = f"""Calculate Total Price""",
-		row = fnPos, column = 1, columnspan = 1, width = 45, height = 1, 
-		bg = COLORS["bg-key-function"], font = theAppFont(size = "12"),
-		padx = 5, pady = 5,
-		command = lambda: calculateTotalPrice() 
-	)
 	tk.mainloop()
 
 def deleteProduct():
@@ -474,7 +332,150 @@ def alterProduct():
 		tk.mainloop()
 	listAllElements()
 	tk.mainloop()
+
+
+def regisratsiya():
+	global products
+	downloadCurrentProducts()
+	tk = Tk.Tk()
+	tk.configure(bg = COLORS["bg"])
+	productsBuyen = []
+	productsQuantityList = []
+
+	def alterQuantity(pos):
+		nonlocal productsBuyen
+		tk = Tk.Tk()
+		tk.configure(bg = COLORS["bg"])
+		
+		def quantityAltered(pos):
+			nonlocal quantityEntry
+			nonlocal productsBuyen
+			nonlocal productsQuantityList
+			quantinity_tm = productsBuyen[pos]["quantity"]
+			try: 
+				quantinity_tm = float(quantityEntry.get())
+				generateMessage("Success")
+			except:
+				quantityEntry.delete(0, Tk.END)
+				quantityEntry.insert(0, str(productsBuyen[pos]["quantity"]))
+				generateMessage("Err: Please make sure it is float!")
+			productsBuyen[pos]["quantity"] = quantinity_tm
+			productsQuantityList[pos].configure(
+				text = f""".&{
+					(
+						productsBuyen[pos]["quantity"] 
+					) if productsBuyen[pos]["quantity"] != round(productsBuyen[pos]["quantity"]) else (
+						round(productsBuyen[pos]["quantity"])
+					)
+				}"""
+			)
+
+		gridElement(
+			Tk.Label, tk, 
+			text = f"""Quantity of [{pos}]@> \"{productsBuyen[pos]["name"]}\": """, 
+			row = 0, column = 2,  width = 45, height = 1, 
+			bg = COLORS["bg"], font = theAppFont(size = "12"),
+			padx = 5, pady = 5, 
+		)
+		quantityEntry = gridElement(
+			Tk.Entry, tk, 
+			row = 0, column = 3,
+			state = "normal", 
+			bg = COLORS["bg"], font = theAppFont(size = "12"),  
+		)
+		gridElement(
+			Tk.Button, tk, 
+			text = f"""Alter""", 
+			row = 0, column = 4,  width = 5, height = 1, 
+			bg = COLORS["bg-key"], font = theAppFont(size = "12"),
+			padx = 5, pady = 5,
+			command = lambda pos=pos: quantityAltered(pos)
+		)
+		tk.mainloop()
+		
+	def buy(providenProduct):
+		nonlocal productsBuyen
+		nonlocal productsQuantityList
+		gridElement(
+			Tk.Label, tk, 
+			text = f"""\"{providenProduct["name"]}\" ({providenProduct["price"]}) """, 
+			row = len(productsBuyen), column = 2,  width = 45, height = 1, 
+			bg = COLORS["bg"], font = theAppFont(size = "12"),
+			padx = 5, pady = 5,
+		)
+		productsQuantityList += [
+			gridElement(
+				Tk.Label, tk, 
+				text = f""".&1""", 
+				row = len(productsBuyen), column = 3,  width = 5, height = 1, 
+				bg = COLORS["bg"], font = theAppFont(size = "12"),
+				padx = 5, pady = 5,
+			), 
+		]
+		gridElement(
+			Tk.Button, tk, 
+			text = f"""\"Alter""", 
+			row = len(productsBuyen), column = 4,  width = 5, height = 1, 
+			bg = COLORS["bg-key"], font = theAppFont(size = "12"),
+			padx = 5, pady = 5,
+			command = lambda pos=len(productsBuyen): alterQuantity(pos)
+		)
+		productsBuyen += [{**providenProduct,  "quantity": 1}]
+
+	def calculateTotalPrice():
+		nonlocal productsBuyen
+		result = 0
+		for item in productsBuyen:
+			result += item["price"] * item["quantity"]
+		generateMessage(result)
+		return result
+
+	itemPos = 0
+	for item in products:
+		gridElement(
+			Tk.Button, tk, text = f"""({item["id"]}) \"{item["name"]}\" = ({item["price"]} EUR)""",
+			row = itemPos, column = 0, columnspan = 1, width = 45, height = 1, 
+			bg = COLORS["bg-key-variable"], font = theAppFont(size = "12"),
+			padx = 5, pady = 5,
+			command = lambda item = item: buy(item)
+		)
+		itemPos += 1
 	
+	fnPos = 0
+	gridElement(
+		Tk.Button, tk, text = f"""Calculate Total Price""",
+		row = fnPos, column = 1, columnspan = 1, width = 45, height = 1, 
+		bg = COLORS["bg-key-function"], font = theAppFont(size = "12"),
+		padx = 5, pady = 5,
+		command = lambda: calculateTotalPrice() 
+	)
+	tk.mainloop()
+
+def setColorMode():
+	root = Tk.Tk()
+	root.configure(bg = COLORS["bg"])
+	gridElement(
+		Tk.Button, root, text = "Dark",
+		row = 0, column = 0, 
+		bg = COLORS["bg"], font = theAppFont(size = "16"),
+		padx = 5, pady = 5,
+		command = lambda: alterColors(False)
+	)
+	gridElement(
+		Tk.Button, root, text = "Ask System",
+		row = 1, column = 0, 
+		bg = COLORS["bg"], font = theAppFont(size = "16"),
+		padx = 5, pady = 5,
+		command = lambda: alterColors(None)
+	)
+	gridElement(
+		Tk.Button, root, text = "Light",
+		row = 2, column = 0, 
+		bg = COLORS["bg"], font = theAppFont(size = "16"),
+		padx = 5, pady = 5,
+		command = lambda: alterColors(True)
+	)
+
 if __name__ == "__main__":
 	root = Tk.Tk()
 	root.configure(bg = COLORS["bg"])
