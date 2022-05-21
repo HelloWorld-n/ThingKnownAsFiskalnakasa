@@ -3,7 +3,6 @@ import pymysql
 import requests
 import os
 
-
 UPCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 DOWNCASE = "abcdefghijklmnopqrstuvwxyz"
 DIGITS = "0123456789"

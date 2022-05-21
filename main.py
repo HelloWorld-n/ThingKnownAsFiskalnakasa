@@ -62,6 +62,9 @@ def addProduct():
 			except ValueError:
 				raise ValueError("Id Must Be Integer")
 
+			if len(name.get()) > 100:
+				raise ValueError("Name Lenght Must Be Less Than 100")
+
 			try:
 				float(price.get()), 
 			except ValueError:
@@ -280,6 +283,9 @@ def alterProduct():
 				except ValueError:
 					raise ValueError("Id Must Be Integer")
 
+				if len(name.get()) > 100:
+					raise ValueError("Name Lenght Must Be Less Than 100")
+
 				try:
 					float(priceEntry.get()), 
 				except ValueError:
@@ -332,7 +338,6 @@ def alterProduct():
 		tk.mainloop()
 	listAllElements()
 	tk.mainloop()
-
 
 def regisratsiya():
 	global products

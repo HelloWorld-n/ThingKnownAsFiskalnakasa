@@ -100,7 +100,6 @@ def isSystemDark():
 def isSystemLight():
 	return theme() == "Light"
 
-
 global COLORS_DARK, COLORS, COLORS_LIGHT
 
 COLORS_LIGHT = {
@@ -143,7 +142,6 @@ COLORS_DARK = {
 	"fg-purple": "#ED4CFF",
 }
 
-
 def setColorMode(isItLight = None, changeSettings = True):
 	global COLORS_DARK, COLORS, COLORS_LIGHT
 	if isItLight == False:
@@ -163,7 +161,6 @@ def setColorMode(isItLight = None, changeSettings = True):
 		file = open(f"./.settings/theme.pyon", "w")
 		file.write(f"{isItLight}")
 		file.close()
-
 
 def theAppFont(name = "Consolas", size = "12", style = "normal"):
 	return f"{name} {size} {style}"
@@ -185,7 +182,6 @@ def createElement(element, *args, toPack = True, **kwargs):
 		result.pack()
 	return result
 
-
 def gridElement(element, *args, row, column, rowspan = 1, columnspan = 1, **kwargs):
 	result = createElement(element, *args, toPack = False, **kwargs)
 	result.grid(row = row, column = column, rowspan = rowspan, columnspan = columnspan)
@@ -204,7 +200,6 @@ def generateMessage(message):
 	)
 	infoMessage.protocol("WM_DELETE_WINDOW", lambda: [infoMessage.destroy(), infoMessage.quit()])
 	infoMessage.mainloop()
-
 
 try:
 	file = open("./.settings/theme.pyon", "r")
