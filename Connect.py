@@ -15,9 +15,9 @@ SQL_PASSWORD = "the_pass"
 
 def connectSql():
 	return pymysql.connect(
-		host=HOST, 
-		port=int(PORT), 
-		user=SQL_USERNAME,
-		password=SQL_PASSWORD,
-		cursorclass=pymysql.cursors.DictCursor
+		host = HOST, 
+		port = int(PORT), 
+		user = SQL_USERNAME,
+		password = SQL_PASSWORD,
+		cursorclass = pymysql.cursors.DictCursor
 	)

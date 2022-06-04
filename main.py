@@ -29,8 +29,8 @@ def downloadCurrentProducts():
 
 		db.commit()
 	except Exception as exception:
-		print("<h1 class=\"failure\">Problem.</h1>")
-		print(exception)
+		generateMessage("The problem has occured." + "\n" + str(exception))
+		print(exception, file = "/dev/stderr")
 	
 	db.rollback()
 
