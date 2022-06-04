@@ -29,7 +29,7 @@ def downloadCurrentProducts():
 
 		db.commit()
 	except Exception as exception:
-		generateMessage("The problem has occured." + "\n" + str(exception))
+		generateMessage("The problem has occured.\n" + str(exception))
 		print(exception, file = "/dev/stderr")
 	
 	db.rollback()
